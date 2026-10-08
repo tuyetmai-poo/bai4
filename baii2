@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bố cục trang web với DIV và CSS</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f1f1f1;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 1. THANH ĐIỀU HƯỚNG TRÊN CÙNG (NAVBAR) */
+        .navbar {
+            background-color: #222222;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: 50px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .nav-logo {
+            color: #9d9d9d;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 0 15px;
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            height: 100%;
+        }
+
+        .nav-links li {
+            height: 100%;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 0 15px;
+            color: #9d9d9d;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+
+        /* Mục active (Home) */
+        .nav-links a.active {
+            background-color: #080808;
+            color: #ffffff;
+        }
+
+        .nav-login a {
+            color: #9d9d9d;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-login a:hover {
+            color: #ffffff;
+        }
+
+        /* 2. KHU VỰC THÂN TRANG (3 CỘT) */
+        .main-container {
+            display: flex;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Cột bên trái */
+        .sidebar-left {
+            width: 18%;
+            background-color: #f1f1f1;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sidebar-left a {
+            color: #337ab7;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .sidebar-left a:hover {
+            text-decoration: underline;
+        }
+
+        /* Cột nội dung chính giữa */
+        .content-center {
+            width: 62%;
+            background-color: #ffffff;
+            padding: 30px;
+            border-left: 1px solid #e7e7e7;
+            border-right: 1px solid #e7e7e7;
+        }
+
+        .content-center h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .content-center h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .content-center p {
+            line-height: 1.5;
+            font-size: 13.5px;
+            color: #333333;
+            text-align: justify;
+        }
+
+        .content-center hr {
+            border: 0;
+            border-top: 1px solid #eee;
+            margin: 25px 0;
+        }
+
+        /* Cột bên phải (quảng cáo ADS) */
+        .sidebar-right {
+            width: 20%;
+            background-color: #f1f1f1;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .ad-box {
+            background-color: #ffffff;
+            border: 1px solid #e3e3e3;
+            border-radius: 4px;
+            padding: 25px 10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* 3. CHÂN TRANG (FOOTER) */
+        .footer {
+            background-color: #555555;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. HEADER / NAVBAR -->
+    <div class="navbar">
+        <div class="nav-left">
+            <a href="#" class="nav-logo">Logo</a>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Projects</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+        <div class="nav-login">
+            <a href="#">➜] Login</a>
+        </div>
+    </div>
+
+    <!-- 2. THÂN TRANG 3 CỘT -->
+    <div class="main-container">
+        <!-- Cột trái chứa các Link -->
+        <div class="sidebar-left">
+            <a href="#">Link</a>
+            <a href="#">Link</a>
+            <a href="#">Link</a>
+        </div>
+
+        <!-- Cột giữa chứa nội dung bài viết -->
+        <div class="content-center">
+            <h1>Welcome</h1>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, 
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </p>
+            
+            <hr>
+
+            <h3>Test</h3>
+            <p>Lorem ipsum...</p>
+        </div>
+
+        <!-- Cột phải chứa các khối ADS -->
+        <div class="sidebar-right">
+            <div class="ad-box">ADS</div>
+            <div class="ad-box">ADS</div>
+        </div>
+    </div>
+
+    <!-- 3. FOOTER -->
+    <div class="footer">
+        Footer Text
+    </div>
+
+</body>
+</html>
