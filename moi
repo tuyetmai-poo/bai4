@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giao diện Facebook Giản lược</title>
+    <style>
+        /* ==================== 1. THIẾT LẬP CHUNG ==================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5; /* Màu nền xám nhạt đặc trưng của Facebook */
+            color: #1c1e21;
+            padding-top: 56px; /* Chừa khoảng trống phía trên cho fixed header (cao 56px) */
+        }
+
+        /* ==================== 2. FIXED HEADER (CỐ ĐỊNH PHÍA TRÊN) ==================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 56px;
+            background-color: #1877f2; /* Màu xanh Facebook */
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Đảm bảo header luôn đè lên các nội dung khác khi cuộn */
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-left .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .search-bar input {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 20px;
+            outline: none;
+            width: 240px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #ddd;
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ==================== 3. BỐ CỤC CHÍNH (3 CỘT) ==================== */
+        .app-container {
+            display: flex;
+            justify-content: justify;
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 16px;
+            gap: 32px;
+        }
+
+        /* ==================== 4. SIDEBARS (CỐ ĐỊNH HAI BÊN) ==================== */
+        /* Cả hai sidebar bên trái và bên phải sẽ bám dính khi cuộn trang */
+        .sidebar {
+            width: 280px;
+            position: sticky;
+            top: 72px; /* Dưới header 56px + khoảng cách 16px */
+            height: calc(100vh - 72px); /* Chiều cao tối đa bằng màn hình trừ đi header */
+            overflow-y: auto; /* Tự xuất hiện thanh cuộn riêng nếu danh sách quá dài */
+        }
+
+        /* Ẩn bớt thanh cuộn thô trên các sidebar để đẹp hơn */
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        /* Danh sách trong sidebar */
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .sidebar-item:hover {
+            background-color: #e4e6eb;
+        }
+
+        .sidebar-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #1877f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* ==================== 5. NỘI DUNG CHÍNH (CỘT GIỮA CÓ THỂ CUỘN) ==================== */
+        .main-content {
+            flex: 1;
+            max-width: 590px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Hộp tạo bài viết */
+        .create-post {
+            background: white;
+            border-radius: 8px;
+            padding: 12px 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-input-container {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            border-bottom: 1px solid #e4e6eb;
+            padding-bottom: 12px;
+        }
+
+        .post-input-container input {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            background-color: #f0f2f5;
+            border-radius: 20px;
+            outline: none;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .post-input-container input:hover {
+            background-color: #e4e6eb;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #65676b;
+            transition: background 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: #f2f2f2;
+        }
+
+        /* Bài viết (Post) */
+        .post-card {
+            background: white;
+            border-radius: 8px;
+            padding: 12px 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .post-info h4 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .post-info span {
+            font-size: 12px;
+            color: #65676b;
+        }
+
+        .post-body {
+            font-size: 15px;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .post-image {
+            width: calc(100% + 32px);
+            margin: 0 -16px 12px -16px; /* Bung ảnh tràn lề card */
+            background-color: #eee;
+        }
+
+        .post-image img {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .post-footer {
+            border-top: 1px solid #e4e6eb;
+            display: flex;
+            justify-content: space-between;
+            padding-top: 4px;
+        }
+
+        /* ==================== 6. RESPONSIVE (MÀN HÌNH NHỎ) ==================== */
+        @media (max-width: 1100px) {
+            .sidebar-right {
+                display: none; /* Ẩn bớt sidebar phải khi màn hình hẹp */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-left {
+                display: none; /* Chỉ giữ lại feed nội dung chính trên mobile */
+            }
+            .app-container {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. FIXED HEADER -->
+    <header>
+        <div class="header-left">
+            <a href="#" class="logo">facebook</a>
+            <div class="search-bar">
+                <input type="text" placeholder="Tìm kiếm trên Facebook">
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <!-- Bạn có thể thay bằng ảnh thật -->
+                    <img src="https://picsum.photos/50" alt="Avatar">
+                </div>
+                <span>Tên của bạn</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- BỐ CỤC TRANG WEB -->
+    <div class="app-container">
+
+        <!-- 2. SIDEBAR TRÁI (CỐ ĐỊNH) -->
+        <aside class="sidebar sidebar-left">
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <div class="sidebar-icon" style="background-color: transparent;">
+                        <div class="user-avatar" style="width:36px; height:36px;"><img src="https://picsum.photos/50" alt="Avatar"></div>
+                    </div>
+                    <strong>Tên của bạn</strong>
+                </li>
+                <li class="sidebar-item">
+                    <div class="sidebar-icon" style="background: #e7f3ff; color: #1877f2;">👥</div>
+                    <span>Bạn bè</span>
+                </li>
+                <li class="sidebar-item">
+                    <div class="sidebar-icon" style="background: #e7f3ff; color: #1877f2;">👨‍👩‍👧‍👦</div>
+                    <span>Nhóm</span>
+                </li>
+                <li class="sidebar-item">
+                    <div class="sidebar-icon" style="background: #ffeb3b; color: #f57f17;">🚩</div>
+                    <span>Trang</span>
+                </li>
+                <li class="sidebar-item">
+                    <div class="sidebar-icon" style="background: #e3f2fd; color: #0d47a1;">⏳</div>
+                    <span>Kỷ niệm</span>
+                </li>
+                <li class="sidebar-item">
+                    <div class="sidebar-icon" style="background: #efebe9; color: #5d4037;">💾</div>
+                    <span>Đã lưu</span>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- 3. NỘI DUNG CHÍNH (CỘT GIỮA) -->
+        <main class="main-content">
+            
+            <!-- Hộp đăng bài -->
+            <div class="create-post">
+                <div class="post-input-container">
+                    <div class="user-avatar">
+                        <img src="https://picsum.photos/50" alt="Avatar">
+                    </div>
+                    <input type="text" placeholder="Bạn đang nghĩ gì thế?">
+                </div>
+                <div class="post-actions">
+                    <div class="action-btn" style="color: #f3425f;">📹 Video trực tiếp</div>
+                    <div class="action-btn" style="color: #45bd62;">📷 Ảnh/video</div>
+                    <div class="action-btn" style="color: #f7b928;">😊 Cảm xúc/hoạt động</div>
+                </div>
+            </div>
+
+            <!-- Bài viết số 1 -->
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="user-avatar">
+                        <img src="https://picsum.photos/80" alt="User Avatar">
+                    </div>
+                    <div class="post-info">
+                        <h4>Nguyễn Văn A</h4>
+                        <span>1 giờ trước · 🌐</span>
+                    </div>
+                </div>
+                <div class="post-body">
+                    Hôm nay trời đẹp quá, mình đi dạo quanh hồ và chụp được bức ảnh này. Chúc cả nhà một ngày làm việc hiệu quả và vui vẻ nhé! 🍀✨
+                </div>
+                <div class="post-image">
+                    <img src="https://picsum.photos/600/400" alt="Post Photo">
+                </div>
+                <div class="post-footer">
+                    <div class="action-btn">👍 Thích</div>
+                    <div class="action-btn">💬 Bình luận</div>
+                    <div class="action-btn">↗️ Chia sẻ</div>
+                </div>
+            </article>
+
+            <!-- Bài viết số 2 (Cuộn tiếp tục) -->
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="user-avatar">
+                        <img src="https://picsum.photos/90" alt="User Avatar">
+                    </div>
+                    <div class="post-info">
+                        <h4>Trần Thị B</h4>
+                        <span>5 giờ trước · 🌐</span>
+                    </div>
+                </div>
+                <div class="post-body">
+                    Học lập trình web thật thú vị! Vừa tự tay dựng xong layout cho một trang cá nhân, giờ thì tiếp tục cày code thôi nào 💪💻 #CodeLife #WebDevelopment
+                </div>
+                <div class="post-footer">
+                    <div class="action-btn">👍 Thích</div>
+                    <div class="action-btn">💬 Bình luận</div>
+                    <div class="action-btn">↗️ Chia sẻ</div>
+                </div>
+            </article>
+
+        </main>
+
+        <!-- 4. SIDEBAR PHẢI (CỐ ĐỊNH) -->
+        <aside class="sidebar sidebar-right">
+            <h4 style="color: #65676b; margin: 0 10px 10px 10px; font-size: 16px;">Người liên hệ</h4>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <div class="user-avatar" style="width:36px; height:36px; position: relative;">
+                        <img src="https://picsum.photos/100" alt="Friend">
+                        <!-- Chấm online -->
+                        <span style="position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; background-color: #31a24c; border: 2px solid white; border-radius: 50%;"></span>
+                    </div>
+                    <span>Lê Văn C</span>
+                </li>
+                <li class="sidebar-item">
+                    <div class="user-avatar" style="width:36px; height:36px; position: relative;">
+                        <img src="https://picsum.photos/110" alt="Friend">
+                        <span style="position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; background-color: #31a24c; border: 2px solid white; border-radius: 50%;"></span>
+                    </div>
+                    <span>Phạm Minh D</span>
+                </li>
+                <li class="sidebar-item">
+                    <div class="user-avatar" style="width:36px; height:36px; position: relative;">
+                        <img src="https://picsum.photos/120" alt="Friend">
+                        <span style="position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; background-color: #31a24c; border: 2px solid white; border-radius: 50%;"></span>
+                    </div>
+                    <span>Hoàng Thảo E</span>
+                </li>
+            </ul>
+        </aside>
+
+    </div>
+
+</body>
+</html>
