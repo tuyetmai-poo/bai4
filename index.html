@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bố cục trang web HTML5</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 30px;
+            background-color: #ffffff;
+        }
+
+        /* Khung viền ngoài bao quanh toàn bộ layout */
+        .container {
+            width: 320px;
+            border: 1px solid #7f7f7f;
+            padding: 6px;
+            background-color: #e6e6e6;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        /* Định dạng chung cho các khối semantic HTML5 */
+        header, nav, section, article, aside, footer {
+            background-color: #ffffff;
+            border: 1px solid #7f7f7f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #333333;
+        }
+
+        /* Chiều cao từng khối */
+        header {
+            height: 45px;
+        }
+
+        nav {
+            height: 38px;
+        }
+
+        /* Khối thân giữa chứa cột trái và aside */
+        .main-content {
+            display: flex;
+            gap: 6px;
+        }
+
+        /* Cột bên trái gồm <section> và <article> */
+        .left-col {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .left-col section {
+            height: 85px;
+        }
+
+        .left-col article {
+            height: 85px;
+        }
+
+        /* Cột bên phải <aside> cao bao trọn cả section và article */
+        aside {
+            flex: 0.9;
+            height: auto;
+        }
+
+        /* Phần footer dưới cùng */
+        footer {
+            height: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Phần đầu trang -->
+        <header>&lt;header&gt;</header>
+
+        <!-- Thanh điều hướng -->
+        <nav>&lt;nav&gt;</nav>
+
+        <!-- Khu vực nội dung chính giữa (gồm cột trái và cột phải) -->
+        <div class="main-content">
+            <div class="left-col">
+                <section>&lt;section&gt;</section>
+                <article>&lt;article&gt;</article>
+            </div>
+            
+            <aside>&lt;aside&gt;</aside>
+        </div>
+
+        <!-- Chân trang -->
+        <footer>&lt;footer&gt;</footer>
+    </div>
+
+</body>
+</html>
